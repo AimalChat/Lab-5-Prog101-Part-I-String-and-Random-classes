@@ -41,6 +41,34 @@ public class SupportSystem
 
         while(!finished) {
             String input = reader.getInput();//what the user types
+            //if this input starts with "bye" = finished
+            input = input.trim();//For Q8, if you want to replace the input with its trimmed version, assign the changed String as the input
+            input = input.toLowerCase();//For Q9, in case you put in all caps.
+            if(input.equals("bye")) {//For 11, could be input.equals("bye"))
+                finished = true;
+            }
+            else {
+                String response = responder.generateResponse();
+                System.out.println(response);
+            }
+        }
+
+        printGoodbye();
+    }
+
+        /**
+     * Start the technical support system. This will print a welcome
+     * message and enter into a dialog with the user, until the user
+     * ends the dialog.
+     */
+    public void startv2()
+    {
+        boolean finished = false;
+
+        printWelcome();
+
+        while(!finished) {
+            String input = reader.getInput();//what the user types
             //if this input starts with "bye" = finished 
             System.out.println("length of input: " + input.length());
             input = input.trim();//For Q8, if you want to replace the input with its trimmed version, assign the changed String as the input
@@ -65,7 +93,7 @@ public class SupportSystem
 
         printGoodbye();
     }
-
+    
     /**
      * Print a welcome message to the screen.
      */
