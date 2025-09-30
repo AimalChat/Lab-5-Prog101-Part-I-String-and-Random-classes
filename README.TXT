@@ -51,32 +51,68 @@ and the details specifying the parameters of both constructors and methods
 3a. Look up the startsWith method in the documentation for String. There are two versions. Describe in 
 your own words what they do and the differences between them.
 
-3b.
+3b.The standart version, meaning the one wihtout the toffset parameter is simply a pattern match with the first
+characters in the inputted String, ex: input= "Sal", output would be for example = salamander, salad, salty...
+Whilst the other one lets you decide at what number of characters to start the patern matching, ex: toffset = 2, \
+String = "ala", the output would be, in this hypothetical situation, salad, salamander.
 
 4a. Is there a method in the String class that tests whether a string ends with a given suffix? If so, what is it 
 called and what are its parameters and return type?
 
-4b.
+4b. boolean endsWith(String suffix), its parameters are a string to represent the suffix we are searching for and
+the return type is boolean, to be used as a conditon.
 
 5a. Is there a method in the String class that returns the number of characters in the string? If so, what is it 
 called and what are its parameters?
 
-5b.
+5b.Yes, the length() method, simply returns the length, Meaning it is of void return type and doesnt require any
+inputed parameters.
 
 6a. If you found methods for the two tasks above, how did you find them? Is it easy or hard to find methods 
 you are looking for? Why?
 
-6b.
+6b.I used control+F to easily navigate through everything, using keywords such as number, length, size to find the 
+length method and did the same for endsWith.
 
 7a. Find the trim method in the String class’s documentation. Write down the header of that method. Write
 down an example call to that method on a String variable called text.
 
 7b.
+public String trim(String input){
+input = input.trim();//For Q8, if you want to replace the input with its trimmed version, assign the changed String as the input
+System.out.println("length of trimed input: " + input.length());
+}
 
 8a. Implement an improvement in your version of the tech-support1 project, making it tolerant of extra spaces
 around the word ‘bye’.
 
 8b.
+    /**
+     * Start the technical support system. This will print a welcome
+     * message and enter into a dialog with the user, until the user
+     * ends the dialog.
+     */
+    public void start()
+    {
+        boolean finished = false;
+
+        printWelcome();
+
+        while(!finished) {
+            String input = reader.getInput();//what the user types
+            //if this input starts with "bye" = finished
+            input = input.trim();//For Q8, if you want to replace the input with its trimmed version, assign the changed String as the input
+            if(input.contains("bye")) {//For 11, could be input.equals("bye"))
+                finished = true;
+            }
+            else {
+                String response = responder.generateResponse();
+                System.out.println(response);
+            }
+        }
+
+        printGoodbye();
+    }
 
 9a. Improve the code of the SupportSystem class in the tech-support1 project so that case in the input is 
 ignored. Use the String class’s toLowerCase method to do this. Remember that this method will not 
@@ -84,21 +120,74 @@ actually change the String it is called on, but result in the creation of a new 
 slightly different contents.
 
 9b.
+    /**
+     * Start the technical support system. This will print a welcome
+     * message and enter into a dialog with the user, until the user
+     * ends the dialog.
+     */
+    public void start()
+    {
+        boolean finished = false;
 
+        printWelcome();
+
+        while(!finished) {
+            String input = reader.getInput();//what the user types
+            //if this input starts with "bye" = finished
+            input = input.trim();//For Q8, if you want to replace the input with its trimmed version, assign the changed String as the input
+            input = input.toLowerCase();//For Q9, in case you put in all caps.
+            if(input.contains("bye")) {//For 11, could be input.equals("bye"))
+                finished = true;
+            }
+            else {
+                String response = responder.generateResponse();
+                System.out.println(response);
+            }
+        }
+
+        printGoodbye();
+    }
 10a. Find the equals method in the documentation for class String. What is the return type of this method?
 
-10b.
+10b.It is of boolean return type
 
 11a. Change your implementation to use the equals method instead of startsWith.
 
 11b.
+    /**
+     * Start the technical support system. This will print a welcome
+     * message and enter into a dialog with the user, until the user
+     * ends the dialog.
+     */
+    public void start()
+    {
+        boolean finished = false;
+
+        printWelcome();
+
+        while(!finished) {
+            String input = reader.getInput();//what the user types
+            //if this input starts with "bye" = finished
+            input = input.trim();//For Q8, if you want to replace the input with its trimmed version, assign the changed String as the input
+            input = input.toLowerCase();//For Q9, in case you put in all caps.
+            if(input.equals("bye")) {//For 11, could be input.equals("bye"))
+                finished = true;
+            }
+            else {
+                String response = responder.generateResponse();
+                System.out.println(response);
+            }
+        }
+
+        printGoodbye();
+    }
 
 12a. Find the class Random in the Java class library documentation. Which package is it in? What does it do?
 How do you construct an instance? How do you generate a random number? Note that you will probably 
 not understand everything that is stated in the documentation. Just try to find out what you need to 
 know.
 
-12b.
+12b. 
 
 13a. Write a small code fragment (on paper) that generates a random integer number using this class.
 
