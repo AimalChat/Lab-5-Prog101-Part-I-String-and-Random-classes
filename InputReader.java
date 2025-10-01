@@ -1,5 +1,5 @@
 import java.util.HashSet;//Another collection class
-import java.util.Scanner;//allows to scam the input of user using the keyboard.
+import java.util.Scanner;//allows to scan the input of user using the keyboard.
 
 /**
  * InputReader reads typed text input from the standard text terminal. 
