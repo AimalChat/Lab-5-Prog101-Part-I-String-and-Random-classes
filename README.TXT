@@ -192,6 +192,25 @@ know.
 13a. Write a small code fragment (on paper) that generates a random integer number using this class.
 
 13b.
+//Import the class from java library
+import.java.util.Random;
+//fields
+private Random generator;
+//class wrapper
+public class Random
+{  
+   //constructor method
+   public void Random(){
+   generator = new Random();
+   }
+
+   //method to generate a int value(without any limits)
+   public int generateRandomInt(){
+   int randomInt = generator.nextInt();
+   return randomInt;
+   }   
+}
+
 
 14a. Write some code (in BlueJ) to test the generation of random numbers. To do this, create a new class 
 called RandomTester. You can create this class in the tech-support1 project, or you can create a new 
@@ -418,8 +437,53 @@ populate the list with responses Strings (in a separate fillResponses method). T
 method should return a String from the list based on a randomly generated index.
 
 22b.
+    public void addDefaultResponses()
+    {
+        responses.add("I think you should make some real friends");
+        responses.add("What are you doing here just talking to me?");
+        responses.add("Get over yourself.");
+    }
+
+    /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateResponse()
+    {
+        int selectedIndex = generator.nextInt(responses.size());
+        String response = responses.get(selectedIndex);
+        return response;
+    }
+
+    /**
+     * Start the technical support system. This will print a welcome
+     * message and enter into a dialog with the user, until the user
+     * ends the dialog.
+     */
+    public void start()
+    {
+        boolean finished = false;
+        //add default answers before having an input.
+        responder.addDefaultResponses();
+        printWelcome();
+
+        while(!finished) {
+            String input = reader.getInput();//what the user types
+            //if this input starts with "bye" = finished
+            input = input.trim();//For Q8, if you want to replace the input with its trimmed version, assign the changed String as the input
+            input = input.toLowerCase();//For Q9, in case you put in all caps.
+            if(input.equals("bye")) {//For 11, could be input.equals("bye"))
+                finished = true;
+            }
+            else {
+                String response = responder.generateResponse();
+                System.out.println(response);
+            }
+        }
 
 23. What happens when you add more (or fewer) possible responses to the responses list? Will the selection 
 of a random response still work properly? Why or why not?
 
 23b.
+It will work just fine, since you determine wiht the initialiaztion of the support system
+what default answers will be found in said arrayList of responses the tech bot can give.
