@@ -36,7 +36,8 @@ public class SupportSystem
     public void start()
     {
         boolean finished = false;
-
+        //add default answers before having an input.
+        responder.addDefaultResponses();
         printWelcome();
 
         while(!finished) {
@@ -64,7 +65,8 @@ public class SupportSystem
     public void startv2()
     {
         boolean finished = false;
-
+        //add default answers before having an input.
+        responder.addDefaultResponses();
         printWelcome();
 
         while(!finished) {
