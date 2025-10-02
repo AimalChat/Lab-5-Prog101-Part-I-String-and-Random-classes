@@ -688,17 +688,26 @@ provide a default value. Test it to get a feel for how well it works.
 34a. What are the similarities and differences between a HashSet and an ArrayList? Use the descriptions of Set, HashSet, List, and ArrayList in the library documentation to find 
 out, because HashSet is a special case of a Set and ArrayList is a special case of a List.
 
-34b. 
+34b. They're both collections. ArrayList and HashSet both grow automatically when a new accepted element is added to their collection. Both are unsorted lists. HashSet typically has two parameters while Array
+has one, but they do share it both, the initial capacity. Thye can both extend an existing collection with the ceation of a set. They both allow for iteration over the entire collection, however the order in which they are iterated are 
+different. ArrayList loops over its collection by order of the indexes while HashSet simply iterates with
+no real index to keep track, it still does do the same job, just a bit more carefree with what is scanned first. They both
+allow the use of Iterators so removing, adding, hasNext and next, meaning they can both be modified during an 
+iteration. HashSet does not allow for duplicates in their collection. HashSet uses the Set class, while ArrayList uses
+the List class. Also, ArrayList's elements can be accesed by index while HashSet cannot. HashSet is faster than ArrayList
+in an interation it seems?
 
 35a. What is the difference in the result of returning the words in a HashSet compared with returning them 
 in an ArrayList?
 
-35b.
+35b.For example, if you had repeats in both list, then HashSet would not return them and it would display the
+elements in the collection in whatever order. While in the ArrayList, the user would see an ordered list
+with the duplicates still displayed.
 
 36a. What happens if there is more than one space between two words (e.g., two or three spaces)? Is there a 
 problem?
 
-36b.
+36b.Well, if the
 
 37a. To implement the final changes discussed in the book, you would also need to adjust the SupportSystem 
 and Responder classes to deal with a set of words instead of a single String:
@@ -736,3 +745,4 @@ appropriate answer in that case.
 fitting default response: for example, words such as “why,” “how,” and “who.”
 
 42b.
+
