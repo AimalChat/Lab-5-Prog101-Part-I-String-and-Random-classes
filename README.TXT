@@ -281,7 +281,7 @@ public class RandomTester
 specified. What are the possible random numbers that are generated when you call this method with 100 
 as its parameter?
 
-15b.The values that can be generated from this specific limit would be 0 to 100.
+15b.The values that can be generated from this specific limit would be 0 to 99.
 
 16a. Write a method in your RandomTester class called throwDice that returns a random number between 1 
 and 6 (inclusive). Try to find a way to do this that only involves calling once on each call of . In other 
@@ -291,12 +291,8 @@ return the value 0.
 16b.
     public int throwDice()
     {
-        int diceFace = generator.nextInt(6);
-        if(diceFace == 0){
-            return (diceFace + 1);
-        }else{
-            return diceFace;
-        }
+        int diceFace = generator.nextInt(6) + 1 ;//because 7 is exclusive
+        return diceFace;
     }
 17a. Write a method called getResponse that randomly returns one of the strings "yes", "no", or "maybe". 
 Store those strings in a list and randomly select one from the list on each call.
@@ -384,14 +380,8 @@ method and make sure that the method can never return 0.
 19b.
     public int returnValidRandomNumber(int max)
     {
-        int validNumber = generator.nextInt(max);
-        if(validNumber == 0)
-        {
-            validNumber++;
-            return validNumber;
-        }else{
-            return validNumber;
-        }
+        int validNumber = generator.nextInt(max) + 1;
+        return validNumber;
     }
 
 20a. Add a method to your RandomTester class that takes two parameters, min and max, and generates a 
@@ -406,10 +396,10 @@ necessary to use a loop in this method.
         int min;
         if(a > b)
         {
-            max = a;
+            max = a++;
             min = b;
         }else{
-            max = b;
+            max = b++;
             min = a;
         }
         int validNumber = generator.nextInt(min,max);
@@ -481,9 +471,268 @@ method should return a String from the list based on a randomly generated index.
             }
         }
 
-23. What happens when you add more (or fewer) possible responses to the responses list? Will the selection 
+23a. What happens when you add more (or fewer) possible responses to the responses list? Will the selection 
 of a random response still work properly? Why or why not?
 
 23b.
 It will work just fine, since you determine wiht the initialiaztion of the support system
 what default answers will be found in said arrayList of responses the tech bot can give.
+
+24a. What is a HashMap? What is its purpose and how do you use it? Answer these questions in writing, and 
+use the Java library documentation of Map and HashMap for your responses. Note that you will find it 
+hard to understand everything, as the documentation for these classes is not very good. We will discuss 
+the details later in this chapter, but see what you can find out on your own before reading on.
+
+24b.It is an object that stores Map objects, which is an object that maps keys to values. 
+The Map interface provides three collection views, which allow a map's contents to be 
+viewed as a set of keys, collection of values, or set of key-value mappings. Esentially, it sets a key(similar to a passcode) in order to access its value. So, like a diary and key. 
+the key is your key in this case while the contents of the diary is the value stored within
+that key. Only one value can be set to a key, or, as the API says, each key can map to at
+most one value. But that value can be a collection object, so value(s).
+
+25a. HashMap is a parameterized class. List those of its methods that depend on the types used to parameterize it. Do you think the same type could be used for both of its 
+parameters?
+
+25b. Yes.
+HashMap(), Constructs an empty HashMap with the default initial capacity (16) and the default load factor (0.75). Load factor is simply how full it can be before having to automatically
+increase its capacity. Usually its (0.75)
+
+HashMap(int initialCapacity), you decide the initial capacity
+
+HashMap(int initialCapacity, float loadFactor), you decide the loadFactor variable's value.
+
+HashMap(Map<? extends K,? extends V> m), Constructs a new HashMap with the same mappings as the specified Map.
+
+26a. How do you check how many entries are contained in a map?
+
+26b.
+public int getHashMapSize()
+{
+   HashMap hashMap = new HashMap();
+   hashMap.size();
+}
+
+
+27a. Create a class MapTester (either in your current project or in a new project). In it, use a HashMap to 
+implement a phone book similar to the one in the example in the book. (Remember that you must 
+import java.util.HashMap.) In this class, implement two methods:
+ public void enterNumber(String name, String number)
+ and
+ public String lookupNumber(String name)
+ The methods should use the put and get methods of the HashMap class to implement their 
+functionality.
+
+27b.
+import java.util.HashMap;
+
+/**
+ * Write a description of class MapTester here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class MapTester
+{
+    // instance variables - replace the example below with your own
+    private HashMap<String, String> hashMap;
+    //key for accessing number 
+    private String name;
+    //value stored in name key
+    private String number;
+
+    /**
+     * Constructor for objects of class MapTester
+     */
+    public MapTester()
+    {
+        hashMap = new HashMap();
+    }
+
+    /**
+     * @param name = key, number = value corresponding to the name key
+     * Associates the specified number with the specified name in this map.
+     */
+    public void enterNumber(String name, String number)
+    {
+        hashMap.put(name, number);
+    }
+    
+    /**
+     * @param  name  Key associated to the value we are searching for(number)
+     * @return       (number associated to name)value stored in key
+     */
+    public String lookupNumber(String name)
+    {
+        number = hashMap.get(name);
+        return number;
+    }
+}
+
+28a. What happens when you add an entry to a map with a key that already exists in the map?
+
+28b.the value stored in said key is replaced by the recently inputted one.
+
+29a. What happens when you add an entry to a map with two different keys?
+
+29b.They both get added into the hashmap collection. However, one is at the 3rd index while
+the second is at the 13th index.
+
+30a. How do you check whether a given key is contained in a map? (Give a Java code example.)
+
+30b.
+    /**
+     * @param  name  Key associated to the value we are searching for(number)
+     * @return       (number associated to name)value stored in key
+     */
+    public String lookupNumber(String name)
+    {
+        if(hashMap.containsKey(name))
+        {
+            number = hashMap.get(name);
+            return number;
+        }else
+        {
+            System.out.println("The name : "+ name + "is not included in our database.");
+            return null;
+        }
+    }
+
+31a. What happens when you try to look up a value and the key does not exist in the map?
+
+31b. it return null.
+
+32a. How do you print out all keys currently stored in a map?
+
+32b.
+
+33a. Change your version of the TechSupport system to use a map of known words as keys 
+and associated responses as values. A new method, fillResponsesMap, should be created to 
+populate the HashMap of responses. At this stage, the generateResponse method should 
+receive a single word as a parameter, and return the value associated with that word in 
+the HashMap. If the word is not a valid key, a call to pickDefaultResponse() should 
+provide a default value. Test it to get a feel for how well it works.
+
+33b.
+    public void fillResponseMap()
+    {
+        betterResponses.put("glitch","What kind of glitch?");
+        betterResponses.put("thank","You're welcome!");
+        betterResponses.put("die","haha, you're so funny!");
+        betterResponses.put("kind","Oh that? Just a feature.");
+        betterResponses.put("hi","hello! :D");
+        betterResponses.put("feature","If I say it's a feature, then it is one.");
+        betterResponses.put("help","For additional help, please call : (000)-000-0000");
+        betterResponses.put("number","You shouldve just started with calling the place");
+        betterResponses.put("sad","Please don't kill yourself. :C");
+    }
+
+    /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateResponse(String input)
+    {
+        if(betterResponses.containsKey(input))
+        {
+            String response = betterResponses.get(input);
+            return response;
+        }else
+        {
+            String response = generateBasicResponse();
+            return response;
+        }
+    }
+
+    /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateBasicResponse()
+    {
+        int selectedIndex = generator.nextInt(responses.size());
+        String response = responses.get(selectedIndex);
+        return response;
+    }
+
+    /**
+     * Start the technical support system. This will print a welcome
+     * message and enter into a dialog with the user, until the user
+     * ends the dialog.
+     */
+    public void start()
+    {
+        boolean finished = false;
+        //add somewhat logical answers before having an input.
+        responder.fillResponseMap();
+        //add default answers before having an input.
+        responder.addDefaultResponses();
+        printWelcome();
+
+        while(!finished) {
+            String input = reader.getInput();//what the user types
+            //if this input starts with "bye" = finished
+            input = input.trim();
+            input = input.toLowerCase();
+            if(input.contains("bye")) {
+                finished = true;
+            }
+            else {
+                String response = responder.generateResponse(input);
+                System.out.println(response);
+            }
+        }
+
+        printGoodbye();
+    }
+
+34a. What are the similarities and differences between a HashSet and an ArrayList? Use the descriptions of Set, HashSet, List, and ArrayList in the library documentation to find 
+out, because HashSet is a special case of a Set and ArrayList is a special case of a List.
+
+34b. 
+
+35a. What is the difference in the result of returning the words in a HashSet compared with returning them 
+in an ArrayList?
+
+35b.
+
+36a. What happens if there is more than one space between two words (e.g., two or three spaces)? Is there a 
+problem?
+
+36b.
+
+37a. To implement the final changes discussed in the book, you would also need to adjust the SupportSystem 
+and Responder classes to deal with a set of words instead of a single String:
+ ◦ The input variable receiving the result from reader.getInput() is now of type HashSet
+ ◦ The check for ending the application is done using the contains method of the HashSet class, rather 
+than a String method
+ ◦ The HashSet class has to be imported
+ ◦ The generateResponse method in the Responder class has to accept a set of words as a parameter. It
+ should iterate over these words and check each of them with our map of known words. If any is 
+recognized, we return the associated response, otherwise, one of the default reponses is returned.
+
+37b.
+
+38a. Add more word/response mappings into your application. You could copy some out of the solutions 
+provided and add some yourself.
+
+38b.
+
+39a. Ensure that the same default response is never repeated twice in a row.
+
+39b.
+
+40a. Challenge exercise Sometimes two words (or variations of a word) are mapped to the same response. Deal 
+with this by mapping synonyms or related expressions to the same string so that you do not need 
+multiple entries in the response map for the same response.
+
+40b.
+
+41a. Challenge exercise Identify multiple matching words in the user’s input, and respond with a more 
+appropriate answer in that case.
+
+41b.
+
+42a. Challenge exercise When no word is recognized, use other words from the user’s input to pick a well
+fitting default response: for example, words such as “why,” “how,” and “who.”
+
+42b.
