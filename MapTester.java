@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Write a description of class MapTester here.
@@ -17,6 +18,8 @@ public class MapTester
     private String number;
     //to store something for Q35
     private HashSet<String> hashSet;
+    
+    private Set listOfNames;
 
     /**
      * Constructor for objects of class MapTester
@@ -43,22 +46,17 @@ public class MapTester
     public void enterName(String name)
     {
         hashSet.add(name);
+        listOfNames.add(name);
     }
     
         /**
      * @param  name  Key associated to the value we are searching for(number)
      * @return       (number associated to name)value stored in key
      */
-    public String lookupName(String name)
+    public void lookupNames()
     {
-        if(hashSet.contains(name))
-        {
-            name = hashMap.get(name);
-            return number;
-        }else
-        {
-            System.out.println("The name : "+ name + "is not included in our database.");
-            return null;
+        for(String firstName : hashSet){
+            System.out.println(firstName);
         }
     }
     
