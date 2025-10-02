@@ -599,11 +599,21 @@ the second is at the 13th index.
 
 31a. What happens when you try to look up a value and the key does not exist in the map?
 
-31b. it return null.
+31b. it returns null.
 
 32a. How do you print out all keys currently stored in a map?
 
 32b.
+                /**
+     * Prints out list of keys from the HashMap.
+     */
+    public void lookupNames()
+    {
+        Set listOfNames = hashMap.keySet();
+        for(String firstName : hashSet){
+            System.out.println(firstName);
+        }
+    }
 
 33a. Change your version of the TechSupport system to use a map of known words as keys 
 and associated responses as values. A new method, fillResponsesMap, should be created to 
@@ -707,7 +717,8 @@ with the duplicates still displayed.
 36a. What happens if there is more than one space between two words (e.g., two or three spaces)? Is there a 
 problem?
 
-36b.Well, if the
+36b.Well, yes, because it, the splitter, would then split the empty places, making it so that the empty
+Strings are in the array.
 
 37a. To implement the final changes discussed in the book, you would also need to adjust the SupportSystem 
 and Responder classes to deal with a set of words instead of a single String:
@@ -745,4 +756,5 @@ appropriate answer in that case.
 fitting default response: for example, words such as “why,” “how,” and “who.”
 
 42b.
+
 
