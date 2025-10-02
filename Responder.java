@@ -1,6 +1,8 @@
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 
 /**
  * The responder class represents a response generator object.
@@ -17,6 +19,7 @@ public class Responder
     private ArrayList<String> responses;
     // collection of possible answers that correspond to an input
     private HashMap<String, String> betterResponses;
+    //to store said betterResponses in case of iteration needed.
     
     /**
      * Construct a Responder - nothing to do
@@ -71,6 +74,27 @@ public class Responder
     }
     
     /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateResponsev1(String input)
+    {
+        while(betterResponses.keySet().iterator().hasNext()){
+            String answer = betterResponses.keySet().iterator().next();
+            if(answer.equals(input))
+            {
+                String response = betterResponses.get(input);
+                return response;
+            }else
+            {
+                String response = generateBasicResponse();
+                return response;
+            }
+        }
+        return null;
+    }
+    
+        /**
      * Generate a response.
      * @return   A string that should be displayed as the response
      */
