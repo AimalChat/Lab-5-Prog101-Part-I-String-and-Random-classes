@@ -15,7 +15,7 @@ public class RandomTester
     private ArrayList<String> responses;
 
     /**
-     * Constructor for objects of class RandomTeste
+     * Constructor for objects of class RandomTester
      */
     public RandomTester()
     {

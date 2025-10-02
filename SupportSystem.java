@@ -18,7 +18,6 @@ public class SupportSystem
     private InputReader reader;
     private Responder responder;
     private Random randomNumberGen;
-    
     /**
      * Creates a technical support system.
      */
@@ -36,6 +35,8 @@ public class SupportSystem
     public void start()
     {
         boolean finished = false;
+        //add somewhat logical answers before having an input.
+        responder.fillResponseMap();
         //add default answers before having an input.
         responder.addDefaultResponses();
         printWelcome();
@@ -43,26 +44,62 @@ public class SupportSystem
         while(!finished) {
             String input = reader.getInput();//what the user types
             //if this input starts with "bye" = finished
-            input = input.trim();//For Q8, if you want to replace the input with its trimmed version, assign the changed String as the input
-            input = input.toLowerCase();//For Q9, in case you put in all caps.
-            if(input.equals("bye")) {//For 11, could be input.equals("bye"))
+            input = input.trim();
+            input = input.toLowerCase();
+            if(input.contains("bye")) {
                 finished = true;
             }
             else {
-                String response = responder.generateResponse();
+                String response = responder.generateResponse(input);
                 System.out.println(response);
             }
         }
 
         printGoodbye();
     }
-
+    
         /**
      * Start the technical support system. This will print a welcome
      * message and enter into a dialog with the user, until the user
      * ends the dialog.
      */
     public void startv2()
+    {
+        boolean finished = false;
+        //add default answers before having an input.
+        responder.fillResponseMap();
+        responder.addDefaultResponses();
+        printWelcome();
+
+        while(!finished) {
+            String input = reader.getInput();//what the user types
+            //if this input starts with "bye" = finished
+            input = input.trim();
+            input = input.toLowerCase();
+            if(input.contains("bye")) {
+                finished = true;
+            }
+            else {
+                if(responder.generateResponse(input)!= null)
+                {
+                    String response = responder.generateResponse(input);
+                }else
+                {
+                    String response = responder.generateBasicResponse();
+                    System.out.println(response);
+                }
+            }
+        }
+
+        printGoodbye();
+    }
+    
+        /**
+     * Start the technical support system. This will print a welcome
+     * message and enter into a dialog with the user, until the user
+     * ends the dialog.
+     */
+    public void startv1()
     {
         boolean finished = false;
         //add default answers before having an input.
@@ -88,7 +125,7 @@ public class SupportSystem
                 finished = true;
             }
             else {
-                String response = responder.generateResponse();
+                String response = responder.generateResponse(input);
                 System.out.println(response);
             }
         }
