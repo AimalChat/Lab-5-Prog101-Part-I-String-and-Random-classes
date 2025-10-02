@@ -281,7 +281,7 @@ public class RandomTester
 specified. What are the possible random numbers that are generated when you call this method with 100 
 as its parameter?
 
-15b.The values that can be generated from this specific limit would be 0 to 100.
+15b.The values that can be generated from this specific limit would be 0 to 99.
 
 16a. Write a method in your RandomTester class called throwDice that returns a random number between 1 
 and 6 (inclusive). Try to find a way to do this that only involves calling once on each call of . In other 
@@ -291,7 +291,7 @@ return the value 0.
 16b.
     public int throwDice()
     {
-        int diceFace = generator.nextInt(6);
+        int diceFace = generator.nextInt(7);//because 7 is exclusive
         if(diceFace == 0){
             return (diceFace + 1);
         }else{
@@ -384,7 +384,7 @@ method and make sure that the method can never return 0.
 19b.
     public int returnValidRandomNumber(int max)
     {
-        int validNumber = generator.nextInt(max);
+        int validNumber = generator.nextInt(max + 1);
         if(validNumber == 0)
         {
             validNumber++;
@@ -406,10 +406,10 @@ necessary to use a loop in this method.
         int min;
         if(a > b)
         {
-            max = a;
+            max = a++;
             min = b;
         }else{
-            max = b;
+            max = b++;
             min = a;
         }
         int validNumber = generator.nextInt(min,max);
@@ -487,3 +487,4 @@ of a random response still work properly? Why or why not?
 23b.
 It will work just fine, since you determine wiht the initialiaztion of the support system
 what default answers will be found in said arrayList of responses the tech bot can give.
+
