@@ -25,14 +25,24 @@ public class InputReader
      * Read a line of text from standard input (the text terminal),
      * and return it as a String.
      *
-     * @return  A String typed by the user.
+     * @return  A String typed by the user that becomes an ArrayList for
+     * the scanner to read.
      */
-    public String getInput()
+    public HashSet<String> getInput()
     {
         // print prompt
-        System.out.print("> ");         
-        String inputLine = reader.nextLine();
+        System.out.print("> ");
+        //empty set to put each individual word in the String input.
+        HashSet<String> inputSet = new HashSet<String>();
+        //The inputed String in question and remove all uneccessary characters.
+        String inputLine = reader.nextLine().replaceAll(",","").replaceAll("\\?","").toLowerCase().replaceAll("\\.","").replaceAll("\\!","");
+        //Individualize each word of the String input into an ArrayList that will be scaner in responder
+        String[] arrayInput = inputLine.split(" ");//inputLine.split = splitting each part of sentence. 
+        for(String word : arrayInput)//for each word, add to the hashSet for it to be read.
 
-        return inputLine;
+        {
+            inputSet.add(word);
+        }
+        return inputSet;
     }
 }

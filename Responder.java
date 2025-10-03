@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * The responder class represents a response generator object.
@@ -13,13 +15,14 @@ import java.util.Iterator;
  */
 public class Responder
 {
-        // instance variables - replace the example below with your own
+    // instance variables - replace the example below with your own
     private Random generator;
     // collection of possible answers
     private ArrayList<String> responses;
     // collection of possible answers that correspond to an input
     private HashMap<String, String> betterResponses;
     //to store said betterResponses in case of iteration needed.
+    private HashSet<String> input;
     
     /**
      * Construct a Responder - nothing to do
@@ -48,6 +51,78 @@ public class Responder
         betterResponses.put("help","For additional help, please call : (000)-000-0000");
         betterResponses.put("number","You shouldve just started with calling the place");
         betterResponses.put("sad","Please don't kill yourself. :C");
+        betterResponses.put("crash", 
+                        """
+                        Well, it never crashes on our system. It must have something
+                        to do with your system. Tell me more about your configuration.
+                        """);
+        betterResponses.put("crashes", 
+                        """
+                        Well, it never crashes on our system. It must have something
+                        "to do with your system. Tell me more about your configuration.
+                        """);
+        betterResponses.put("slow", 
+                        """
+                        I think this has to do with your hardware. Upgrading your processor
+                        should solve all performance problems. Have you got a problem with
+                        our software?
+                        """);
+        betterResponses.put("performance", 
+                        """
+                        Performance was quite adequate in all our tests. Are you running
+                        any other processes in the background?
+                        """);
+        betterResponses.put("bug", 
+                        """
+                        Well, you know, all software has some bugs. But our software engineers
+                        are working very hard to fix them. Can you describe the problem a bit
+                        further?
+                        """);
+        betterResponses.put("buggy", 
+                        """
+                        Well, you know, all software has some bugs. But our software engineers
+                        "are working very hard to fix them. Can you describe the problem a bit
+                        further?
+                        """);
+        betterResponses.put("windows", 
+                        """
+                        This is a known bug to do with the Windows operating system. Please
+                        report it to Microsoft. There is nothing we can do about this.
+                        """);
+        betterResponses.put("mac", 
+                        """
+                        This is a known bug to do with the Mac operating system. Please
+                        report it to Apple. There is nothing we can do about this.
+                        """);
+        betterResponses.put("expensive", 
+                        """
+                        The cost of our product is quite competitive. Have you looked around
+                        and really compared our features?
+                        """);
+        betterResponses.put("installation", 
+                        """
+                        The installation is really quite straight forward. We have tons of
+                        "wizards that do all the work for you. Have you read the installation
+                        instructions?
+                        """);
+        betterResponses.put("memory", 
+                        """
+                        If you read the system requirements carefully, you will see that the
+                        specified memory requirements are 1.5 giga byte. You really should
+                        upgrade your memory. Anything else you want to know?
+                        """);
+        betterResponses.put("linux", 
+                        """
+                        We take Linux support very seriously. But there are some problems.
+                        Most have to do with incompatible glibc versions. Can you be a bit
+                        more precise?
+                        """);
+        betterResponses.put("bluej", 
+                        """
+                        Ahhh, BlueJ, yes. We tried to buy out those guys long ago, but
+                        they simply won't sell... Stubborn people they are. Nothing we can
+                        do about it, I'm afraid.
+                        """);
     }
     
     public void addDefaultResponses()
@@ -77,14 +152,15 @@ public class Responder
      * Generate a response.
      * @return   A string that should be displayed as the response
      */
-    public String generateResponsev1(String input)
+    public String generateResponse(HashSet<String> inputSet)
     {
-        while(betterResponses.keySet().iterator().hasNext()){
-            String answer = betterResponses.keySet().iterator().next();
-            if(answer.equals(input))
+        Iterator<String> it = inputSet.iterator();
+        while(it.hasNext()){
+            String word = it.next();
+            String answer = betterResponses.get(word);
+            if(answer!=null)
             {
-                String response = betterResponses.get(input);
-                return response;
+                return answer;
             }else
             {
                 String response = generateBasicResponse();
@@ -98,7 +174,7 @@ public class Responder
      * Generate a response.
      * @return   A string that should be displayed as the response
      */
-    public String generateResponse(String input)
+    public String generateResponsev1(String input)
     {
         if(betterResponses.containsKey(input))
         {
