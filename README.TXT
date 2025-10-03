@@ -731,11 +731,170 @@ than a String method
 recognized, we return the associated response, otherwise, one of the default reponses is returned.
 
 37b.
+    /**
+     * Read a line of text from standard input (the text terminal),
+     * and return it as a set that contains each individual word of the input.
+     *
+     * @return  A String typed by the user that becomes an ArrayList for
+     * the scanner to read.
+     */
+    public HashSet<String> getInput()
+    {
+        // print prompt
+        System.out.print("> ");
+        //empty set to put each individual word in the String input.
+        HashSet<String> inputSet = new HashSet<String>();
+        //The inputed String in question, replace all other extra characters with empty.
+        String inputLine = reader.nextLine().replaceAll(",","").toLowerCase().replaceAll("\\.","").replaceAll("\\!","");
+        //Individualize each word of the String input into an ArrayList that will be scaner in responder
+        String[] arrayInput = inputLine.split(" ");//inputLine.split = splitting each part of sentence. 
+        for(String word : arrayInput)//for each word, add to the hashSet for it to be read.
+
+        {
+            inputSet.add(word);
+        }
+
+        return inputSet;
+    }
+
+    /**
+     * Start the technical support system. This will print a welcome
+     * message and enter into a dialog with the user, until the user
+     * ends the dialog.
+     */
+    public void start()
+    {
+        boolean finished = false;
+        //add somewhat logical answers before having an input.
+        responder.fillResponseMap();//HashSet
+        //add default answers before having an input.
+        responder.addDefaultResponses();//ArrayList
+        printWelcome();
+
+        while(!finished) {
+            HashSet<String> input = reader.getInput();//what the user types
+            if(input.contains("bye")) {//if this input starts with "bye" = finished
+                finished = true;
+            }
+            else {
+                String response = responder.generateResponse(input);
+                System.out.println(response);
+            }
+        }
+
+        printGoodbye();
+    }
+
+     /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateResponse(HashSet<String> inputSet)
+    {
+        Iterator<String> it = inputSet.iterator();
+        while(it.hasNext()){
+            String word = it.next();
+            String answer = betterResponses.get(word);
+            if(answer!=null)
+            {
+                return answer;
+            }else
+            {
+                String response = generateBasicResponse();
+                return response;
+            }
+        }
+        return null;
+    }
 
 38a. Add more word/response mappings into your application. You could copy some out of the solutions 
 provided and add some yourself.
 
 38b.
+    public void fillResponseMap()
+    {
+        betterResponses.put("glitch","What kind of glitch?");
+        betterResponses.put("thank","You're welcome!");
+        betterResponses.put("die","haha, you're so funny!");
+        betterResponses.put("kind","Oh that? Just a feature.");
+        betterResponses.put("hi","hello! :D");
+        betterResponses.put("feature","If I say it's a feature, then it is one.");
+        betterResponses.put("help","For additional help, please call : (000)-000-0000");
+        betterResponses.put("number","You shouldve just started with calling the place");
+        betterResponses.put("sad","Please don't kill yourself. :C");
+        betterResponses.put("crash", 
+                        """
+                        Well, it never crashes on our system. It must have something
+                        to do with your system. Tell me more about your configuration.
+                        """);
+        betterResponses.put("crashes", 
+                        """
+                        Well, it never crashes on our system. It must have something
+                        "to do with your system. Tell me more about your configuration.
+                        """);
+        betterResponses.put("slow", 
+                        """
+                        I think this has to do with your hardware. Upgrading your processor
+                        should solve all performance problems. Have you got a problem with
+                        our software?
+                        """);
+        betterResponses.put("performance", 
+                        """
+                        Performance was quite adequate in all our tests. Are you running
+                        any other processes in the background?
+                        """);
+        betterResponses.put("bug", 
+                        """
+                        Well, you know, all software has some bugs. But our software engineers
+                        are working very hard to fix them. Can you describe the problem a bit
+                        further?
+                        """);
+        betterResponses.put("buggy", 
+                        """
+                        Well, you know, all software has some bugs. But our software engineers
+                        "are working very hard to fix them. Can you describe the problem a bit
+                        further?
+                        """);
+        betterResponses.put("windows", 
+                        """
+                        This is a known bug to do with the Windows operating system. Please
+                        report it to Microsoft. There is nothing we can do about this.
+                        """);
+        betterResponses.put("mac", 
+                        """
+                        This is a known bug to do with the Mac operating system. Please
+                        report it to Apple. There is nothing we can do about this.
+                        """);
+        betterResponses.put("expensive", 
+                        """
+                        The cost of our product is quite competitive. Have you looked around
+                        and really compared our features?
+                        """);
+        betterResponses.put("installation", 
+                        """
+                        The installation is really quite straight forward. We have tons of
+                        "wizards that do all the work for you. Have you read the installation
+                        instructions?
+                        """);
+        betterResponses.put("memory", 
+                        """
+                        If you read the system requirements carefully, you will see that the
+                        specified memory requirements are 1.5 giga byte. You really should
+                        upgrade your memory. Anything else you want to know?
+                        """);
+        betterResponses.put("linux", 
+                        """
+                        We take Linux support very seriously. But there are some problems.
+                        Most have to do with incompatible glibc versions. Can you be a bit
+                        more precise?
+                        """);
+        betterResponses.put("bluej", 
+                        """
+                        Ahhh, BlueJ, yes. We tried to buy out those guys long ago, but
+                        they simply won't sell... Stubborn people they are. Nothing we can
+                        do about it, I'm afraid.
+                        """);
+    }
 
 39a. Ensure that the same default response is never repeated twice in a row.
 
@@ -743,7 +902,7 @@ provided and add some yourself.
 
 40a. Challenge exercise Sometimes two words (or variations of a word) are mapped to the same response. Deal 
 with this by mapping synonyms or related expressions to the same string so that you do not need 
-multiple entries in the response map for the same response.
+multiple entries in the response map for the same response.//use root and another hashmap is what I got from the teach?
 
 40b.
 
@@ -756,5 +915,6 @@ appropriate answer in that case.
 fitting default response: for example, words such as “why,” “how,” and “who.”
 
 42b.
+
 
 
