@@ -1144,7 +1144,7 @@ public void fillQuestionsMap()
             return response;
         }else
         {
-            if(!answerFound)
+            if(lessLegitimateResponse.length() > 0)
             {
                 String response = lessLegitimateResponse.toString().trim();
                 return response;
@@ -1155,3 +1155,4 @@ public void fillQuestionsMap()
             }
         }
     }
+
