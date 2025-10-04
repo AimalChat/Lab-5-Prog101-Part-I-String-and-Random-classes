@@ -899,22 +899,259 @@ provided and add some yourself.
 39a. Ensure that the same default response is never repeated twice in a row.
 
 39b.
+    //index of most recent default response.
+    private int latestIndex;
+
+    public int fetchIndexOfLatestResponse()
+    {
+        return latestIndex;
+    }
+    
+    /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateBasicResponse()
+    {
+        //randomly generated index to put in the ArrayList
+        int selectedIndex = generator.nextInt(responses.size());
+        //For first loop, latestIndex = -1, so not a valid answer, meaning prints answer without condition.
+        while(latestIndex == selectedIndex)
+        {
+            //reroll until different than the latestIndex field.
+            selectedIndex = generator.nextInt(responses.size());
+        }
+        //call whatever is stored in the generated index of the ArrayList
+        String response = responses.get(selectedIndex);
+        //update the lastest index to the one who was just now generated. 
+        latestIndex = selectedIndex;
+        //return chosen default response.
+        return response;
+    }
 
 40a. Challenge exercise Sometimes two words (or variations of a word) are mapped to the same response. Deal 
 with this by mapping synonyms or related expressions to the same string so that you do not need 
 multiple entries in the response map for the same response.//use root and another hashmap is what I got from the teach?
 
 40b.
+    public void fillSynonymMap()
+    {
+        synonyms.put("ios",betterResponses.get("mac"));
+        synonyms.put("hello",betterResponses.get("hi"));
+        synonyms.put("phone",betterResponses.get("help"));
+        synonyms.put("useless",betterResponses.get("die"));
+        synonyms.put("depressed",betterResponses.get("sad"));
+        synonyms.put("buggy",betterResponses.get("bug"));
+    }
+
+    /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateResponse(HashSet<String> inputSet)
+    {
+        Iterator<String> it = inputSet.iterator();
+        while(it.hasNext()){
+            String word = it.next();
+            String answer = betterResponses.get(word);
+            String variation = synonyms.get(word);
+            if(answer != null)
+            {
+                return answer;
+            }else if(variation != null)
+            {
+                return variation;
+            }
+        }
+        String response = generateBasicResponse();
+        return response;
+    }
 
 41a. Challenge exercise Identify multiple matching words in the user’s input, and respond with a more 
 appropriate answer in that case.
 
-41b.
+41b. 
+
+    /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateResponse(HashSet<String> inputSet)
+    {
+        Iterator<String> it = inputSet.iterator();
+        boolean answerFound = false;
+        StringBuilder legitimateResponse = new StringBuilder();
+        while(it.hasNext()){
+            String word = it.next();
+            String answer = betterResponses.get(word);
+            String variation = synonyms.get(word);
+            if(answer != null)
+            {
+                answerFound = true;
+                legitimateResponse.append(answer).append("\n");
+            }else if(variation != null)
+            {
+                answerFound = true;
+                legitimateResponse.append(variation).append("\n");
+            }
+        }
+            if(answerFound){
+            String response = legitimateResponse.toString().trim();
+            return response;
+        }else
+        {
+            String response = generateBasicResponse();
+            return response;
+        }
+    }
 
 42a. Challenge exercise When no word is recognized, use other words from the user’s input to pick a well
 fitting default response: for example, words such as “why,” “how,” and “who.”
 
 42b.
+    /**
+     * Start the technical support system. This will print a welcome
+     * message and enter into a dialog with the user, until the user
+     * ends the dialog.
+     */
+    public void start()
+    {
+        boolean finished = false;
+        //add somewhat logical answers before having an input.
+        responder.fillResponseMap();//HashSet for standard responses.
+        responder.fillSynonymMap();//HashSet for synonyms.
+        //add default answers before having an input.
+        responder.fillQuestionsMap();//HashSet for general questions.
+        responder.addDefaultResponses();//ArrayList
+        printWelcome();
 
+        while(!finished) {
+            HashSet<String> input = reader.getInput();//what the user types
+            if(input.contains("bye")) {//if this input starts with "bye" = finished
+                finished = true;
+            }
+            else {
+                String response = responder.generateResponse(input);
+                System.out.println(response);
+            }
+        }
 
+        printGoodbye();
+    }
 
+    /**
+     * Read a line of text from standard input (the text terminal),
+     * and return it as a String.
+     *
+     * @return  A String typed by the user that becomes an ArrayList for
+     * the scanner to read.
+     */
+    public HashSet<String> getInput()
+    {
+        // print prompt
+        System.out.print("> ");
+        //empty set to put each individual word in the String input.
+        HashSet<String> inputSet = new HashSet<String>();
+        //The inputed String in question and remove all uneccessary characters.
+        String inputLine = reader.nextLine().replaceAll(",","").replaceAll("\\?","").toLowerCase().replaceAll("\\.","").replaceAll("\\!","").replaceAll("\\?","");
+        //Individualize each word of the String input into an ArrayList that will be scaner in responder
+        String[] arrayInput = inputLine.split(" ");//inputLine.split = splitting each part of sentence. 
+        for(String word : arrayInput)//for each word, add to the hashSet for it to be read.
+
+        {
+            inputSet.add(word);
+        }
+        return inputSet;
+    }
+
+//to store general questions.
+    private HashMap<String, String> questions;
+    
+    /**
+     * Construct a Responder - nothing to do
+     */
+    public Responder()
+    {
+        generator = new Random();
+        responses = new ArrayList<String>();
+        betterResponses = new HashMap<String,String>();
+        synonyms = new HashMap<String,String>();
+        latestIndex = -1;
+        questions = new HashMap<String,String>();
+    }
+
+public void fillQuestionsMap()
+    {
+        questions.put("who","""
+                            I am a swagger jagger helper bot named TinyTan, 
+                            here to answer your questions related to issues 
+                            you're currently facing!
+                            """);
+        questions.put("what","""
+                            What, what, wh-wh-what, what. No but honestly,
+                            what do you want from a hardworking and extremely
+                            handsome/beautiful bot?
+                            """);
+        questions.put("where","""
+                            Most likely you'll find the settings you want to
+                            find are in the tab at the top left corner of your
+                            screen. Just look through'em.
+                            """);
+        questions.put("when","""
+                            Born in 1989. Yes, I am Taylor Swift's biggest fan.
+                            """);
+        questions.put("why","""
+                            Why not? I mean why not? My god. I meant why not?
+                            I give up.
+                            """);
+        questions.put("how","BY USING FRESHLY CURATED HUMAN MINDS. rawr :3");
+        questions.put("which","Which is, not my problem.");
+        questions.put("whose","I do not know, go ask Gandalf or something");
+        questions.put("whom","Whom? Who uses whom???? Use WHO like everyone.");
+    }
+
+    /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateResponse(HashSet<String> inputSet)
+    {
+        Iterator<String> it = inputSet.iterator();
+        boolean answerFound = false;
+        StringBuilder legitimateResponse = new StringBuilder();
+        StringBuilder lessLegitimateResponse = new StringBuilder();
+        while(it.hasNext()){
+            String word = it.next();
+            String answer = betterResponses.get(word);
+            String variation = synonyms.get(word);
+            String answerToQuestion = questions.get(word);
+            if(answer != null)
+            {
+                answerFound = true;
+                legitimateResponse.append(answer).append("\n");
+            }else if(variation != null)
+            {
+                answerFound = true;
+                legitimateResponse.append(variation).append("\n");
+            }
+            if(answerToQuestion!=null)
+            {
+                lessLegitimateResponse.append(answerToQuestion).append("\n");
+            }
+        }
+            if(answerFound){
+            String response = legitimateResponse.toString().trim();
+            return response;
+        }else
+        {
+            if(!answerFound)
+            {
+                String response = lessLegitimateResponse.toString().trim();
+                return response;
+            }else
+            {
+                String response = generateBasicResponse();
+                return response;
+            }
+        }
+    }
