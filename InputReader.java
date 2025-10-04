@@ -35,7 +35,7 @@ public class InputReader
         //empty set to put each individual word in the String input.
         HashSet<String> inputSet = new HashSet<String>();
         //The inputed String in question and remove all uneccessary characters.
-        String inputLine = reader.nextLine().replaceAll(",","").replaceAll("\\?","").toLowerCase().replaceAll("\\.","").replaceAll("\\!","");
+        String inputLine = reader.nextLine().replaceAll(",","").replaceAll("\\?","").toLowerCase().replaceAll("\\.","").replaceAll("\\!","").replaceAll("\\?","");
         //Individualize each word of the String input into an ArrayList that will be scaner in responder
         String[] arrayInput = inputLine.split(" ");//inputLine.split = splitting each part of sentence. 
         for(String word : arrayInput)//for each word, add to the hashSet for it to be read.

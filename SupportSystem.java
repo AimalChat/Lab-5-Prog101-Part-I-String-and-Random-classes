@@ -37,8 +37,10 @@ public class SupportSystem
     {
         boolean finished = false;
         //add somewhat logical answers before having an input.
-        responder.fillResponseMap();//HashSet
+        responder.fillResponseMap();//HashSet for standard responses.
+        responder.fillSynonymMap();//HashSet for synonyms.
         //add default answers before having an input.
+        responder.fillQuestionsMap();//HashSet for general questions.
         responder.addDefaultResponses();//ArrayList
         printWelcome();
 

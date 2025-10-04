@@ -23,6 +23,12 @@ public class Responder
     private HashMap<String, String> betterResponses;
     //to store said betterResponses in case of iteration needed.
     private HashSet<String> input;
+    //index of most recent default response.
+    private int latestIndex;
+    //collection of synonyms.
+    private HashMap<String, String> synonyms;
+    //to store general questions.
+    private HashMap<String, String> questions;
     
     /**
      * Construct a Responder - nothing to do
@@ -32,12 +38,63 @@ public class Responder
         generator = new Random();
         responses = new ArrayList<String>();
         betterResponses = new HashMap<String,String>();
+        synonyms = new HashMap<String,String>();
+        latestIndex = -1;
+        questions = new HashMap<String,String>();
     }
 
     private void getResponse()
     {
         int selectedIndex = generator.nextInt(responses.size());
         System.out.println(responses.get(selectedIndex));
+    }
+    
+    public void fillSynonymMap()
+    {
+        synonyms.put("ios",betterResponses.get("mac"));
+        synonyms.put("hello",betterResponses.get("hi"));
+        synonyms.put("phone",betterResponses.get("help"));
+        synonyms.put("useless",betterResponses.get("die"));
+        synonyms.put("depressed",betterResponses.get("sad"));
+        synonyms.put("buggy",betterResponses.get("bug"));
+    }
+    
+    public void fillQuestionsMap()
+    {
+        questions.put("who","""
+                            I am a swagger jagger helper bot named TinyTan, 
+                            here to answer your questions related to issues 
+                            you're currently facing!
+                            """);
+        questions.put("what","""
+                            What, what, wh-wh-what, what. No but honestly,
+                            what do you want from a hardworking and extremely
+                            handsome/beautiful bot?
+                            """);
+        questions.put("where","""
+                            Most likely you'll find the settings you want to
+                            find are in the tab at the top left corner of your
+                            screen. Just look through'em.
+                            """);
+        questions.put("when","""
+                            Born in 1989. Yes, I am Taylor Swift's biggest fan.
+                            """);
+        questions.put("why","""
+                            Why not? I mean why not? My god. I meant why not?
+                            I give up.
+                            """);
+        questions.put("how","BY USING FRESHLY CURATED HUMAN MINDS. rawr :3");
+        questions.put("which","Which is, not my problem.");
+        questions.put("whose","I do not know, go ask Gandalf or something");
+        questions.put("whom","Whom? Who uses whom???? Use WHO like everyone.");
+    }
+    
+    public void printAllValuesInSynonymMap()
+    {
+        for(String value : synonyms.values())
+        {
+            System.out.println(value);
+        }
     }
     
     public void fillResponseMap()
@@ -76,12 +133,6 @@ public class Responder
                         """
                         Well, you know, all software has some bugs. But our software engineers
                         are working very hard to fix them. Can you describe the problem a bit
-                        further?
-                        """);
-        betterResponses.put("buggy", 
-                        """
-                        Well, you know, all software has some bugs. But our software engineers
-                        "are working very hard to fix them. Can you describe the problem a bit
                         further?
                         """);
         betterResponses.put("windows", 
@@ -137,14 +188,30 @@ public class Responder
         responses.add(response);
     }
     
+    public int fetchIndexOfLatestResponse()
+    {
+        return latestIndex;
+    }
+    
     /**
      * Generate a response.
      * @return   A string that should be displayed as the response
      */
     public String generateBasicResponse()
     {
+        //randomly generated index to put in the ArrayList
         int selectedIndex = generator.nextInt(responses.size());
+        //For first loop, latestIndex = -1, so not a valid answer, meaning prints answer without condition.
+        while(latestIndex == selectedIndex)
+        {
+            //reroll until different than the latestIndex field.
+            selectedIndex = generator.nextInt(responses.size());
+        }
+        //call whatever is stored in the generated index of the ArrayList
         String response = responses.get(selectedIndex);
+        //update the lastest index to the one who was just now generated. 
+        latestIndex = selectedIndex;
+        //return chosen default response.
         return response;
     }
     
@@ -155,12 +222,62 @@ public class Responder
     public String generateResponse(HashSet<String> inputSet)
     {
         Iterator<String> it = inputSet.iterator();
+        boolean answerFound = false;
+        StringBuilder legitimateResponse = new StringBuilder();
+        StringBuilder lessLegitimateResponse = new StringBuilder();
         while(it.hasNext()){
             String word = it.next();
             String answer = betterResponses.get(word);
-            if(answer!=null)
+            String variation = synonyms.get(word);
+            String answerToQuestion = questions.get(word);
+            if(answer != null)
+            {
+                answerFound = true;
+                legitimateResponse.append(answer).append("\n");
+            }else if(variation != null)
+            {
+                answerFound = true;
+                legitimateResponse.append(variation).append("\n");
+            }
+            if(answerToQuestion!=null)
+            {
+                lessLegitimateResponse.append(answerToQuestion).append("\n");
+            }
+        }
+            if(answerFound){
+            String response = legitimateResponse.toString().trim();
+            return response;
+        }else
+        {
+            if(lessLegitimateResponse.length() > 0)
+            {
+                String response = lessLegitimateResponse.toString().trim();
+                return response;
+            }else
+            {
+                String response = generateBasicResponse();
+                return response;
+            }
+        }
+    }
+    
+        /**
+     * Generate a response.
+     * @return   A string that should be displayed as the response
+     */
+    public String generateResponsev2(HashSet<String> inputSet)
+    {
+        Iterator<String> it = inputSet.iterator();
+        while(it.hasNext()){
+            String word = it.next();
+            String answer = betterResponses.get(word);
+            String variation = synonyms.get(word);
+            if(answer != null)
             {
                 return answer;
+            }else if(variation != null)
+            {
+                return variation;
             }else
             {
                 String response = generateBasicResponse();
